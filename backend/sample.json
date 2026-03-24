@@ -1,0 +1,14 @@
+﻿{
+  "transactions": [
+    { "order_date": "2025-02-24", "settlement_date": "2025-02-25", "symbol": "VFV", "quantity": 0.1321, "price_cad": 151.29, "cash_cad": -19.99 },
+    { "order_date": "2025-02-25", "settlement_date": "2025-02-26", "symbol": "VFV", "quantity": 13.1952, "price_cad": 151.57, "cash_cad": -2000.0 },
+    { "order_date": "2025-02-27", "settlement_date": "2025-02-28", "symbol": "VFV", "quantity": 7.902, "price_cad": 151.86, "cash_cad": -1200.0 },
+    { "order_date": "2025-07-07", "settlement_date": "2025-07-08", "symbol": "VFV", "quantity": 3.3499, "price_cad": 151.3201, "cash_cad": -506.91 },
+    { "order_date": "2025-09-02", "settlement_date": "2025-09-03", "symbol": "VFV", "quantity": 32.0359, "price_cad": 156.3196, "cash_cad": -5007.84 },
+    { "order_date": "2025-09-08", "settlement_date": "2025-09-09", "symbol": "XEQT", "quantity": 65.9981, "price_cad": 37.88, "cash_cad": -2500.01 },
+    { "order_date": "2025-10-07", "settlement_date": "2025-10-08", "symbol": "XEQT", "quantity": 0.6963, "price_cad": 39.35, "cash_cad": -27.4 },
+    { "order_date": "2026-01-05", "settlement_date": "2026-01-06", "symbol": "XEQT", "quantity": 7.4128, "price_cad": 40.47, "cash_cad": -300.0 },
+    { "order_date": "2026-01-05", "settlement_date": "2026-01-06", "symbol": "VFV", "quantity": 17.2035, "price_cad": 168.57, "cash_cad": -2899.99 },
+    { "order_date": "2026-01-12", "settlement_date": "2026-01-13", "symbol": "XEQT", "quantity": 0.8707, "price_cad": 41.3, "cash_cad": -35.96 }
+  ]
+}

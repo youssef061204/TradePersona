@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+:root {
+  --background: #07111f;
+  --foreground: #e2e8f0;
+  --font-fustat: var(--font-fustat);
+  --font-mono: var(--font-roboto-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-fustat);
+  min-height: 100vh;
+}

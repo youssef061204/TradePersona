@@ -1,0 +1,11 @@
+backend/node_modules/
+frontend/node_modules/
+node_modules/
+backend/portfolio_backend/data/
+__pycache__/
+backend/uploads/
+.venv/
+frontend/.next/
+.DS_Store
+*.log
+*.err

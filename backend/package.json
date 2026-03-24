@@ -1,0 +1,21 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "cors": "^2.8.6",
+    "csv-parse": "^6.1.0",
+    "dotenv": "^17.2.4",
+    "express": "^5.2.1",
+    "fast-xml-parser": "^5.3.4",
+    "multer": "^2.0.2",
+    "snowflake-sdk": "^2.3.3",
+    "uuid": "^13.0.0"
+  }
+}
