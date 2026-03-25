@@ -3,7 +3,6 @@ import multer from "multer";
 import { v4 as uuidv4 } from "uuid";
 import dotenv from "dotenv";
 import path from "path";
-dotenv.config({ path: path.join(process.cwd(), "backend", ".env") });
 import fs from "fs";
 import { fileURLToPath } from "url";
 import { createRequire } from "module";
@@ -30,6 +29,7 @@ const { analyzeBias } = require("./services/gemini.cjs");
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.join(__dirname, ".env") });
 
 const app = express();
 app.use(cors());
@@ -40,7 +40,10 @@ const upload = multer({
   limits: { fileSize: 50 * 1024 * 1024 },
 });
 
-const RAW_DIR = path.join(__dirname, "uploads", "usertrades_raw");
+const uploadsRoot = process.env.UPLOADS_DIR
+  ? path.resolve(process.env.UPLOADS_DIR)
+  : path.join(__dirname, "uploads");
+const RAW_DIR = path.join(uploadsRoot, "usertrades_raw");
 if (!fs.existsSync(RAW_DIR)) {
   fs.mkdirSync(RAW_DIR, { recursive: true });
 }
@@ -348,6 +351,10 @@ async function computePortfolioMetricsForSession(sessionId, trades) {
 
 app.get("/", (req, res) => {
   res.json({ message: "Backend is running" });
+});
+
+app.get("/healthz", (req, res) => {
+  res.json({ ok: true });
 });
 
 app.post("/api/analyze", async (req, res) => {

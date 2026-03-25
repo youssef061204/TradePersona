@@ -12,6 +12,7 @@ import {
   Sparkles,
   Upload,
 } from "lucide-react";
+import { apiUrl } from "@/lib/api";
 
 const highlights = [
   {
@@ -68,7 +69,7 @@ export default function Home() {
     setResult("Uploading and analyzing your trades...");
 
     try {
-      const res = await fetch("http://localhost:3001/api/uploads/usertrades", {
+      const res = await fetch(apiUrl("/api/uploads/usertrades"), {
         method: "POST",
         body: formData,
       });

@@ -13,6 +13,7 @@ import {
 } from "recharts";
 import { motion } from "motion/react";
 import { AlertTriangle, TrendingDown } from "lucide-react";
+import { apiUrl } from "@/lib/api";
 
 interface TradePoint {
   ts: string;
@@ -68,7 +69,7 @@ export default function PortfolioTimeline({ sessionId, className }: Props) {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch(`http://localhost:3001/analyze/${sid}`);
+        const res = await fetch(apiUrl(`/analyze/${sid}`));
         const body: { charts?: ChartsPayload; error?: string } = await res.json().catch(() => ({}));
         if (!res.ok) throw new Error(body?.error || "Failed to load timeline data");
 

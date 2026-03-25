@@ -8,6 +8,7 @@ import PortfolioRadar from "@/app/components/RadarChart";
 import BiasPieChart from "@/app/components/BiasPieChart";
 import CountUp from "@/app/components/CountUp";
 import PortfolioTimeline from "@/app/components/PortfolioTimeline";
+import { apiUrl } from "@/lib/api";
 
 type ProfileData = {
   name: string;
@@ -105,7 +106,7 @@ export default function ProfilePage() {
 
     const load = async () => {
       try {
-        const res = await fetch("http://localhost:3001/api/uploads/usertrades");
+        const res = await fetch(apiUrl("/api/uploads/usertrades"));
         if (!res.ok) {
           throw new Error("No uploaded data yet");
         }
@@ -148,7 +149,7 @@ export default function ProfilePage() {
           setGeminiAnalysis(null);
           setGeminiError(null);
 
-          fetch("http://localhost:3001/api/analyze", {
+          fetch(apiUrl("/api/analyze"), {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ metrics: data.metrics }),
@@ -171,7 +172,7 @@ export default function ProfilePage() {
           setCoachingLoading(true);
           setCoachingError(null);
 
-          fetch(`http://localhost:3001/coach/${uploadSessionId}/${selectedPersona.investorId}`)
+          fetch(apiUrl(`/coach/${uploadSessionId}/${selectedPersona.investorId}`))
             .then(async (coachRes) => {
               const coachData = await coachRes.json().catch(() => ({}));
               if (coachRes.ok) {

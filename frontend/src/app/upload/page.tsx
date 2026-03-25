@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { apiUrl } from "@/lib/api";
 
 export default function UploadPage() {
     const [file, setFile] = useState<File | null>(null);
@@ -17,7 +18,7 @@ export default function UploadPage() {
         setResult("Uploading...");
 
         try {
-        const res = await fetch("http://localhost:3001/api/uploads/usertrades", {
+        const res = await fetch(apiUrl("/api/uploads/usertrades"), {
             method: "POST",
             body: formData
         });
