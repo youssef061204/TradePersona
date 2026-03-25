@@ -68,4 +68,5 @@ UPLOADS_DIR=/app/data/uploads
 ## Notes
 
 - The backend Docker image installs both Node.js dependencies and Python packages from [backend/requirements.txt](./backend/requirements.txt).
+- Python packages are installed into a container-local virtualenv so Render's Debian base image does not block `pip` with PEP 668.
 - The app listens on `PORT`, which Render sets to `10000` in [render.yaml](./render.yaml).
