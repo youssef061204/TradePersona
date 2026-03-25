@@ -377,7 +377,11 @@ app.post("/api/analyze", async (req, res) => {
   }
 });
 
-app.get("/health", async (req, res) => {
+app.get("/health", (req, res) => {
+  res.json({ ok: true });
+});
+
+app.get("/health/snowflake", async (req, res) => {
   try {
     const conn = await getConnection();
     const rows = await exec(conn, "SELECT CURRENT_VERSION() AS VERSION");
