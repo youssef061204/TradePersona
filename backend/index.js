@@ -35,11 +35,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const upload = multer({
-  storage: multer.memoryStorage(),
-  limits: { fileSize: 50 * 1024 * 1024 },
-});
-
 const uploadsRoot = process.env.UPLOADS_DIR
   ? path.resolve(process.env.UPLOADS_DIR)
   : path.join(__dirname, "uploads");
@@ -47,6 +42,19 @@ const RAW_DIR = path.join(uploadsRoot, "usertrades_raw");
 if (!fs.existsSync(RAW_DIR)) {
   fs.mkdirSync(RAW_DIR, { recursive: true });
 }
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: (_req, _file, cb) => cb(null, RAW_DIR),
+    filename: (_req, file, cb) => {
+      const baseName = path
+        .basename(file.originalname || "upload.csv")
+        .replace(/[^a-zA-Z0-9._-]/g, "_");
+      cb(null, `${Date.now()}-${uuidv4()}-${baseName}`);
+    },
+  }),
+  limits: { fileSize: 50 * 1024 * 1024 },
+});
 
 const sessionPortfolioMetrics = new Map();
 const sessionTrades = new Map(); // in-memory fallback when Snowflake is unavailable
@@ -403,9 +411,11 @@ app.post("/api/uploads/usertrades", upload.single("file"), async (req, res) => {
   }
 
   try {
-    const safeName = `${Date.now()}-${path.basename(original)}`;
-    const rawPath = path.join(RAW_DIR, safeName);
-    await fs.promises.writeFile(rawPath, req.file.buffer);
+    const rawPath = req.file.path;
+    const safeName = path.basename(rawPath);
+    console.log(
+      `[upload] starting simple upload for ${original} (${req.file.size ?? 0} bytes)`
+    );
 
     // Create session ID for this upload
     const sessionId = uuidv4();
@@ -418,7 +428,7 @@ app.post("/api/uploads/usertrades", upload.single("file"), async (req, res) => {
     let normalized = [];
     let dateRange = null;
     try {
-      const parsed = await parseUpload(req.file.buffer, { normalizedPath });
+      const parsed = await parseUpload(rawPath, { normalizedPath });
       normalized = parsed.normalized ? parsed.trades : normalizeTrades(parsed.trades);
       dateRange = parsed.dateRange;
 
@@ -436,6 +446,9 @@ app.post("/api/uploads/usertrades", upload.single("file"), async (req, res) => {
       if (metrics?.portfolio_metrics) {
         sessionPortfolioMetrics.set(sessionId, metrics.portfolio_metrics);
       }
+      console.log(
+        `[upload] completed simple upload for ${original}; ${normalized.length} trades normalized`
+      );
     } catch (err) {
       console.error("Upload parsing/metrics failed:", err);
       return res.status(400).json({ error: "Normalization failed", message: err?.message || String(err) });
@@ -539,8 +552,11 @@ app.post("/upload", upload.single("file"), async (req, res) => {
 
     const sessionId = uuidv4();
     const normalizedPath = path.join(RAW_DIR, `${sessionId}-normalized.csv`);
+    console.log(
+      `[upload] starting generic upload for ${req.file.originalname || "upload.csv"} (${req.file.size ?? 0} bytes)`
+    );
 
-    const parsed = await parseUpload(req.file.buffer, { normalizedPath });
+    const parsed = await parseUpload(req.file.path, { normalizedPath });
     const mode = parsed.mode;
     const normalized = parsed.normalized ? parsed.trades : normalizeTrades(parsed.trades);
     if (!parsed.normalized) {
@@ -552,10 +568,6 @@ app.post("/upload", upload.single("file"), async (req, res) => {
     let portfolioMetrics = null;
     let metricsFull = null;
     try {
-      const rawName = `${sessionId}-${path.basename(req.file.originalname || "upload.csv")}`;
-      const rawPath = path.join(RAW_DIR, rawName);
-      await fs.promises.writeFile(rawPath, req.file.buffer);
-
       const pyResult = await runPythonMetrics(normalizedPath);
       metricsFull = pyResult;
       portfolioMetrics = pyResult?.portfolio_metrics || null;
@@ -606,6 +618,9 @@ app.post("/upload", upload.single("file"), async (req, res) => {
       mode,
       portfolioMetrics,
     });
+    console.log(
+      `[upload] completed generic upload for ${req.file.originalname || "upload.csv"}; ${normalized.length} trades inserted`
+    );
   } catch (e) {
     res.status(500).json({ ok: false, error: e.message });
   }
@@ -928,6 +943,25 @@ app.get("/coach/:sessionId/:investorId", async (req, res) => {
   } catch (e) {
     res.status(500).json({ ok: false, error: String(e.message || e) });
   }
+});
+
+app.use((err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    return res.status(400).json({
+      error: "Upload failed",
+      message: err.message,
+    });
+  }
+
+  if (err) {
+    console.error("Unhandled request error:", err);
+    return res.status(500).json({
+      error: "Server error",
+      message: err?.message || "Unknown error",
+    });
+  }
+
+  next();
 });
 
 const PORT = process.env.PORT || 3001;

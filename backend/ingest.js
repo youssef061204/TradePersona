@@ -13,15 +13,41 @@ function looksLikeJsonBuffer(buf) {
 }
 
 export async function parseUpload(buffer, { normalizedPath = null } = {}) {
-  if (!buffer || buffer.length === 0) throw new Error("Empty upload");
+  if (Buffer.isBuffer(buffer)) {
+    if (buffer.length === 0) throw new Error("Empty upload");
 
-  if (looksLikeJsonBuffer(buffer)) {
-    const text = buffer.toString("utf8");
-    const { trades, mode } = parseJson(text);
-    return { trades, mode, normalized: false, dateRange: null, normalizedPath: null };
+    if (looksLikeJsonBuffer(buffer)) {
+      const text = buffer.toString("utf8");
+      const { trades, mode } = parseJson(text);
+      return { trades, mode, normalized: false, dateRange: null, normalizedPath: null };
+    }
+
+    return await parseCsvTrades(Readable.from(buffer), normalizedPath);
   }
 
-  return await parseCsvTrades(buffer, normalizedPath);
+  if (typeof buffer === "string") {
+    const stat = await fs.promises.stat(buffer).catch(() => null);
+    if (!stat || stat.size === 0) throw new Error("Empty upload");
+
+    const handle = await fs.promises.open(buffer, "r");
+    const sample = Buffer.alloc(Math.min(stat.size, 1024));
+
+    try {
+      await handle.read(sample, 0, sample.length, 0);
+    } finally {
+      await handle.close();
+    }
+
+    if (looksLikeJsonBuffer(sample)) {
+      const text = await fs.promises.readFile(buffer, "utf8");
+      const { trades, mode } = parseJson(text);
+      return { trades, mode, normalized: false, dateRange: null, normalizedPath: null };
+    }
+
+    return await parseCsvTrades(fs.createReadStream(buffer), normalizedPath);
+  }
+
+  throw new Error("Unsupported upload input");
 }
 
 // -------- JSON path (your example format)
@@ -137,7 +163,7 @@ function numOrNull(val) {
 }
 
 // -------- CSV path (flexible headers; P/L optional) - streaming + single pass normalization
-function parseCsvTrades(buffer, normalizedPath) {
+function parseCsvTrades(source, normalizedPath) {
   return new Promise((resolve, reject) => {
     const trades = [];
     const writer = createCsvWriter(normalizedPath);
@@ -248,6 +274,6 @@ function parseCsvTrades(buffer, normalizedPath) {
       }
     });
 
-    Readable.from(buffer).pipe(parser);
+    source.pipe(parser);
   });
 }
