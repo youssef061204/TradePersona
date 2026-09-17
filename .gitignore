@@ -9,3 +9,12 @@ frontend/.next/
 .DS_Store
 *.log
 *.err
+.env
+.env.*
+!.env.example
+!**/.env.example
+backend/ml/artifacts/smoke/
+backend/ml/artifacts/reproduction*/
+frontend/playwright-report/
+frontend/test-results/
+.ruff_cache/

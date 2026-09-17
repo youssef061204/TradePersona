@@ -1,0 +1,125 @@
+{
+  "version": "1.0.0",
+  "features": [
+    {
+      "name": "trades_per_day",
+      "label": "Trading activity",
+      "unit": "trades/day",
+      "definition": "Count / max(elapsed UTC days, 1)."
+    },
+    {
+      "name": "max_trades_hour",
+      "label": "Busiest clock hour",
+      "unit": "trades",
+      "definition": "Maximum count in a UTC clock-hour bin."
+    },
+    {
+      "name": "median_gap_minutes",
+      "label": "Median completion interval",
+      "unit": "minutes",
+      "definition": "Median elapsed minutes between successive completed trades."
+    },
+    {
+      "name": "gap_cv",
+      "label": "Interval variability",
+      "unit": "ratio",
+      "definition": "Population SD / mean of completion intervals."
+    },
+    {
+      "name": "burst_fraction",
+      "label": "Rapid completions",
+      "unit": "fraction",
+      "definition": "Fraction of successive completion intervals <= 5 minutes."
+    },
+    {
+      "name": "daily_count_cv",
+      "label": "Daily activity variability",
+      "unit": "ratio",
+      "definition": "Population SD / mean of daily counts including zero-count calendar days."
+    },
+    {
+      "name": "size_cv",
+      "label": "Position size variability",
+      "unit": "ratio",
+      "definition": "Population SD / mean of quantity * entry price; no account-equity risk claim."
+    },
+    {
+      "name": "max_size_to_median",
+      "label": "Largest relative position",
+      "unit": "ratio",
+      "definition": "Maximum notional divided by median notional."
+    },
+    {
+      "name": "post_loss_size_ratio",
+      "label": "Size after losses",
+      "unit": "ratio",
+      "definition": "Median next/prior notional ratio over transitions following a loss."
+    },
+    {
+      "name": "post_win_size_ratio",
+      "label": "Size after wins",
+      "unit": "ratio",
+      "definition": "Median next/prior notional ratio over transitions following a win."
+    },
+    {
+      "name": "post_loss_increase_fraction",
+      "label": "Size increases after loss",
+      "unit": "fraction",
+      "definition": "Fraction of loss-following transitions with next notional > prior notional."
+    },
+    {
+      "name": "post_loss_gap_ratio",
+      "label": "Completion pace after losses",
+      "unit": "ratio",
+      "definition": "Median loss-following completion interval / overall median interval."
+    },
+    {
+      "name": "post_win_gap_ratio",
+      "label": "Completion pace after wins",
+      "unit": "ratio",
+      "definition": "Median win-following completion interval / overall median interval."
+    },
+    {
+      "name": "streak_size_ratio",
+      "label": "Size after consecutive losses",
+      "unit": "ratio",
+      "definition": "Median next/prior notional ratio following at least two consecutive losses."
+    },
+    {
+      "name": "win_fraction",
+      "label": "Winning trades",
+      "unit": "fraction",
+      "definition": "Fraction of realized outcomes > 0; zero outcomes are neither wins nor losses."
+    },
+    {
+      "name": "loss_win_magnitude_ratio",
+      "label": "Mean loss / mean win",
+      "unit": "ratio",
+      "definition": "Mean absolute realized loss divided by mean realized win; not a disposition measure."
+    },
+    {
+      "name": "max_loss_streak_fraction",
+      "label": "Longest loss sequence",
+      "unit": "fraction",
+      "definition": "Maximum consecutive losses divided by total trades."
+    },
+    {
+      "name": "median_holding_minutes",
+      "label": "Median holding duration",
+      "unit": "minutes",
+      "definition": "Median explicitly supplied completed-position holding duration."
+    },
+    {
+      "name": "holding_cv",
+      "label": "Holding variability",
+      "unit": "ratio",
+      "definition": "Population SD / mean of explicitly supplied holding duration."
+    },
+    {
+      "name": "loss_win_holding_ratio",
+      "label": "Loser / winner holding time",
+      "unit": "ratio",
+      "definition": "Median loss holding duration / median win holding duration; descriptive proxy only."
+    }
+  ]
+}

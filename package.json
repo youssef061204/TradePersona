@@ -1,11 +1,21 @@
 {
-  "dependencies": {
-    "@google/generative-ai": "^0.24.1"
-  },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "prettier": "^3.9.7"
   },
   "scripts": {
-    "dev": "concurrently \"cd backend && npm start\" \"cd frontend && npm run dev\""
-  }
+    "dev": "concurrently \"cd backend && npm start\" \"cd frontend && npm run dev\"",
+    "ml:train": "node scripts/python.mjs -m ml.training train",
+    "ml:evaluate": "node scripts/python.mjs -m ml.training evaluate",
+    "test:ml": "node scripts/python.mjs -m unittest discover -s tests -v",
+    "test:backend": "npm --prefix backend test",
+    "test": "npm run test:ml && npm run test:backend",
+    "build": "npm --prefix frontend run build",
+    "lint": "npm --prefix frontend run lint",
+    "test:e2e": "npm --prefix frontend run test:e2e",
+    "format": "prettier --write \"frontend/src/**/*.{ts,tsx,css}\" \"frontend/e2e/*.ts\" \"backend/*.js\" \"backend/services/*.cjs\" \"backend/test/*.js\""
+  },
+  "name": "tradepersona",
+  "private": true,
+  "engines": { "node": ">=22" }
 }

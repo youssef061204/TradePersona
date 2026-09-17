@@ -1,0 +1,1077 @@
+{
+  "schema_version": "1.0",
+  "scope": "Synthetic benchmark only; classification has not been validated on real traders.",
+  "selected_model": "Logistic regression",
+  "feature_version": "1.0.0",
+  "dataset": {
+    "origin": "Versioned independent synthetic trajectory simulator; legacy CSVs excluded.",
+    "unit": "One independent simulated trader trajectory",
+    "split_counts": {
+      "train": 640,
+      "selection": 240,
+      "calibration": 240,
+      "policy": 240,
+      "test": 320,
+      "shift": 320
+    },
+    "classes": [
+      "calm_trader",
+      "loss_aversion",
+      "overtrader",
+      "revenge_trader"
+    ],
+    "fingerprint": "fe301cbdfabe7ab93269219cbbd9e49ff32286099985adcd262dc7efe70065eb",
+    "total_trades": 224524
+  },
+  "methodology": "Separate whole-trajectory train/selection/calibration/policy/test partitions. Models table uses selection validation. Selected model alone evaluated once on the final synthetic holdout. Stratified trajectory bootstrap, not trade resampling.",
+  "models": [
+    {
+      "name": "Legacy deterministic heuristic",
+      "validation": {
+        "macro_f1": 0.28446484990330323,
+        "weighted_f1": 0.28446484990330323,
+        "accuracy": 0.4,
+        "balanced_accuracy": 0.4,
+        "per_class": {
+          "calm_trader": {
+            "precision": 0.31092436974789917,
+            "recall": 0.6166666666666667,
+            "f1": 0.4134078212290503,
+            "support": 60
+          },
+          "loss_aversion": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 60
+          },
+          "overtrader": {
+            "precision": 1.0,
+            "recall": 0.05,
+            "f1": 0.09523809523809523,
+            "support": 60
+          },
+          "revenge_trader": {
+            "precision": 0.4745762711864407,
+            "recall": 0.9333333333333333,
+            "f1": 0.6292134831460674,
+            "support": 60
+          }
+        },
+        "confusion_matrix": [
+          [
+            37,
+            0,
+            0,
+            23
+          ],
+          [
+            38,
+            0,
+            0,
+            22
+          ],
+          [
+            40,
+            0,
+            3,
+            17
+          ],
+          [
+            4,
+            0,
+            0,
+            56
+          ]
+        ],
+        "roc_auc_ovr_macro": 0.7596296296296297,
+        "pr_auc_macro": 0.505348845606131
+      }
+    },
+    {
+      "name": "Majority class",
+      "validation": {
+        "macro_f1": 0.1,
+        "weighted_f1": 0.1,
+        "accuracy": 0.25,
+        "balanced_accuracy": 0.25,
+        "per_class": {
+          "calm_trader": {
+            "precision": 0.25,
+            "recall": 1.0,
+            "f1": 0.4,
+            "support": 60
+          },
+          "loss_aversion": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 60
+          },
+          "overtrader": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 60
+          },
+          "revenge_trader": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 60
+          }
+        },
+        "confusion_matrix": [
+          [
+            60,
+            0,
+            0,
+            0
+          ],
+          [
+            60,
+            0,
+            0,
+            0
+          ],
+          [
+            60,
+            0,
+            0,
+            0
+          ],
+          [
+            60,
+            0,
+            0,
+            0
+          ]
+        ],
+        "roc_auc_ovr_macro": 0.5,
+        "pr_auc_macro": 0.25
+      }
+    },
+    {
+      "name": "Logistic regression",
+      "hyperparameters": {
+        "C": 1.0
+      },
+      "validation": {
+        "macro_f1": 0.8237484272164151,
+        "weighted_f1": 0.8237484272164151,
+        "accuracy": 0.825,
+        "balanced_accuracy": 0.825,
+        "per_class": {
+          "calm_trader": {
+            "precision": 0.7692307692307693,
+            "recall": 0.6666666666666666,
+            "f1": 0.7142857142857143,
+            "support": 60
+          },
+          "loss_aversion": {
+            "precision": 0.9122807017543859,
+            "recall": 0.8666666666666667,
+            "f1": 0.8888888888888888,
+            "support": 60
+          },
+          "overtrader": {
+            "precision": 0.7352941176470589,
+            "recall": 0.8333333333333334,
+            "f1": 0.78125,
+            "support": 60
+          },
+          "revenge_trader": {
+            "precision": 0.8888888888888888,
+            "recall": 0.9333333333333333,
+            "f1": 0.9105691056910569,
+            "support": 60
+          }
+        },
+        "confusion_matrix": [
+          [
+            40,
+            4,
+            13,
+            3
+          ],
+          [
+            3,
+            52,
+            3,
+            2
+          ],
+          [
+            7,
+            1,
+            50,
+            2
+          ],
+          [
+            2,
+            0,
+            2,
+            56
+          ]
+        ],
+        "roc_auc_ovr_macro": 0.9544444444444443,
+        "pr_auc_macro": 0.8857945419816607
+      }
+    },
+    {
+      "name": "Random Forest",
+      "hyperparameters": {
+        "min_samples_leaf": 8,
+        "n_estimators": 160
+      },
+      "validation": {
+        "macro_f1": 0.821554895302773,
+        "weighted_f1": 0.8215548953027729,
+        "accuracy": 0.8208333333333333,
+        "balanced_accuracy": 0.8208333333333333,
+        "per_class": {
+          "calm_trader": {
+            "precision": 0.7058823529411765,
+            "recall": 0.8,
+            "f1": 0.75,
+            "support": 60
+          },
+          "loss_aversion": {
+            "precision": 0.9259259259259259,
+            "recall": 0.8333333333333334,
+            "f1": 0.8771929824561403,
+            "support": 60
+          },
+          "overtrader": {
+            "precision": 0.8148148148148148,
+            "recall": 0.7333333333333333,
+            "f1": 0.7719298245614035,
+            "support": 60
+          },
+          "revenge_trader": {
+            "precision": 0.859375,
+            "recall": 0.9166666666666666,
+            "f1": 0.8870967741935484,
+            "support": 60
+          }
+        },
+        "confusion_matrix": [
+          [
+            48,
+            3,
+            6,
+            3
+          ],
+          [
+            5,
+            50,
+            2,
+            3
+          ],
+          [
+            12,
+            1,
+            44,
+            3
+          ],
+          [
+            3,
+            0,
+            2,
+            55
+          ]
+        ],
+        "roc_auc_ovr_macro": 0.9588425925925925,
+        "pr_auc_macro": 0.8939153595230123
+      }
+    },
+    {
+      "name": "Histogram gradient boosting",
+      "hyperparameters": {
+        "max_leaf_nodes": 7,
+        "max_iter": 120
+      },
+      "validation": {
+        "macro_f1": 0.813606659662979,
+        "weighted_f1": 0.8136066596629788,
+        "accuracy": 0.8125,
+        "balanced_accuracy": 0.8125,
+        "per_class": {
+          "calm_trader": {
+            "precision": 0.7017543859649122,
+            "recall": 0.6666666666666666,
+            "f1": 0.6837606837606838,
+            "support": 60
+          },
+          "loss_aversion": {
+            "precision": 0.896551724137931,
+            "recall": 0.8666666666666667,
+            "f1": 0.8813559322033898,
+            "support": 60
+          },
+          "overtrader": {
+            "precision": 0.7014925373134329,
+            "recall": 0.7833333333333333,
+            "f1": 0.7401574803149606,
+            "support": 60
+          },
+          "revenge_trader": {
+            "precision": 0.9655172413793104,
+            "recall": 0.9333333333333333,
+            "f1": 0.9491525423728814,
+            "support": 60
+          }
+        },
+        "confusion_matrix": [
+          [
+            40,
+            4,
+            15,
+            1
+          ],
+          [
+            4,
+            52,
+            4,
+            0
+          ],
+          [
+            10,
+            2,
+            47,
+            1
+          ],
+          [
+            3,
+            0,
+            1,
+            56
+          ]
+        ],
+        "roc_auc_ovr_macro": 0.9513425925925925,
+        "pr_auc_macro": 0.8645315423082918
+      }
+    }
+  ],
+  "test": {
+    "macro_f1": 0.7785634118967453,
+    "weighted_f1": 0.7785634118967453,
+    "accuracy": 0.778125,
+    "balanced_accuracy": 0.778125,
+    "per_class": {
+      "calm_trader": {
+        "precision": 0.6708860759493671,
+        "recall": 0.6625,
+        "f1": 0.6666666666666666,
+        "support": 80
+      },
+      "loss_aversion": {
+        "precision": 0.8513513513513513,
+        "recall": 0.7875,
+        "f1": 0.8181818181818182,
+        "support": 80
+      },
+      "overtrader": {
+        "precision": 0.6588235294117647,
+        "recall": 0.7,
+        "f1": 0.6787878787878788,
+        "support": 80
+      },
+      "revenge_trader": {
+        "precision": 0.9390243902439024,
+        "recall": 0.9625,
+        "f1": 0.9506172839506173,
+        "support": 80
+      }
+    },
+    "confusion_matrix": [
+      [
+        53,
+        6,
+        18,
+        3
+      ],
+      [
+        7,
+        63,
+        10,
+        0
+      ],
+      [
+        17,
+        5,
+        56,
+        2
+      ],
+      [
+        2,
+        0,
+        1,
+        77
+      ]
+    ],
+    "roc_auc_ovr_macro": 0.9416666666666667,
+    "pr_auc_macro": 0.8552801847503155,
+    "macro_f1_ci95": [
+      0.7350768411191997,
+      0.8202997343962044
+    ]
+  },
+  "calibration": {
+    "method": "Temperature scaling",
+    "temperature": 1.0328939714592238,
+    "fitted_temperature": 1.0328939714592238,
+    "raw": {
+      "brier": 0.2974256143805398,
+      "ece": 0.04462319048621747,
+      "log_loss": 0.517132409570275,
+      "reliability": [
+        {
+          "lower": 0.0,
+          "upper": 0.1,
+          "count": 0,
+          "confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.2,
+          "count": 0,
+          "confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.2,
+          "upper": 0.3,
+          "count": 0,
+          "confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.3,
+          "upper": 0.4,
+          "count": 2,
+          "confidence": 0.3476468922829646,
+          "accuracy": 1.0
+        },
+        {
+          "lower": 0.4,
+          "upper": 0.5,
+          "count": 18,
+          "confidence": 0.4675450508270855,
+          "accuracy": 0.3333333333333333
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.6,
+          "count": 42,
+          "confidence": 0.555945411141238,
+          "accuracy": 0.5238095238095238
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.7,
+          "count": 34,
+          "confidence": 0.6493913881231262,
+          "accuracy": 0.5294117647058824
+        },
+        {
+          "lower": 0.7,
+          "upper": 0.8,
+          "count": 34,
+          "confidence": 0.7575740114679689,
+          "accuracy": 0.7647058823529411
+        },
+        {
+          "lower": 0.8,
+          "upper": 0.9,
+          "count": 44,
+          "confidence": 0.8473180431877285,
+          "accuracy": 0.7954545454545454
+        },
+        {
+          "lower": 0.9,
+          "upper": 1.0,
+          "count": 146,
+          "confidence": 0.9767493962383601,
+          "accuracy": 0.958904109589041
+        }
+      ]
+    },
+    "calibrated": {
+      "brier": 0.2967463797116194,
+      "ece": 0.04544667386959453,
+      "log_loss": 0.5153522251272971,
+      "reliability": [
+        {
+          "lower": 0.0,
+          "upper": 0.1,
+          "count": 0,
+          "confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.2,
+          "count": 0,
+          "confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.2,
+          "upper": 0.3,
+          "count": 0,
+          "confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.3,
+          "upper": 0.4,
+          "count": 2,
+          "confidence": 0.34528162916705185,
+          "accuracy": 1.0
+        },
+        {
+          "lower": 0.4,
+          "upper": 0.5,
+          "count": 20,
+          "confidence": 0.4666449441901038,
+          "accuracy": 0.35
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.6,
+          "count": 44,
+          "confidence": 0.5572101187698475,
+          "accuracy": 0.5454545454545454
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.7,
+          "count": 32,
+          "confidence": 0.6507430017513225,
+          "accuracy": 0.5
+        },
+        {
+          "lower": 0.7,
+          "upper": 0.8,
+          "count": 38,
+          "confidence": 0.7578362920133169,
+          "accuracy": 0.7894736842105263
+        },
+        {
+          "lower": 0.8,
+          "upper": 0.9,
+          "count": 41,
+          "confidence": 0.8490963276616977,
+          "accuracy": 0.8048780487804879
+        },
+        {
+          "lower": 0.9,
+          "upper": 1.0,
+          "count": 143,
+          "confidence": 0.9758350237291126,
+          "accuracy": 0.958041958041958
+        }
+      ]
+    },
+    "deployed": {
+      "brier": 0.2967463797116194,
+      "ece": 0.04544667386959453,
+      "log_loss": 0.5153522251272971,
+      "reliability": [
+        {
+          "lower": 0.0,
+          "upper": 0.1,
+          "count": 0,
+          "confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.2,
+          "count": 0,
+          "confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.2,
+          "upper": 0.3,
+          "count": 0,
+          "confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.3,
+          "upper": 0.4,
+          "count": 2,
+          "confidence": 0.34528162916705185,
+          "accuracy": 1.0
+        },
+        {
+          "lower": 0.4,
+          "upper": 0.5,
+          "count": 20,
+          "confidence": 0.4666449441901038,
+          "accuracy": 0.35
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.6,
+          "count": 44,
+          "confidence": 0.5572101187698475,
+          "accuracy": 0.5454545454545454
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.7,
+          "count": 32,
+          "confidence": 0.6507430017513225,
+          "accuracy": 0.5
+        },
+        {
+          "lower": 0.7,
+          "upper": 0.8,
+          "count": 38,
+          "confidence": 0.7578362920133169,
+          "accuracy": 0.7894736842105263
+        },
+        {
+          "lower": 0.8,
+          "upper": 0.9,
+          "count": 41,
+          "confidence": 0.8490963276616977,
+          "accuracy": 0.8048780487804879
+        },
+        {
+          "lower": 0.9,
+          "upper": 1.0,
+          "count": 143,
+          "confidence": 0.9758350237291126,
+          "accuracy": 0.958041958041958
+        }
+      ]
+    }
+  },
+  "coverage": [
+    {
+      "threshold": 0,
+      "coverage": 0.921875,
+      "accepted": 295,
+      "accuracy": 0.7932203389830509,
+      "macro_f1": 0.7906672867287237
+    },
+    {
+      "threshold": 0.4,
+      "coverage": 0.921875,
+      "accepted": 295,
+      "accuracy": 0.7932203389830509,
+      "macro_f1": 0.7906672867287237
+    },
+    {
+      "threshold": 0.55,
+      "coverage": 0.85,
+      "accepted": 272,
+      "accuracy": 0.8161764705882353,
+      "macro_f1": 0.8078066230042873
+    },
+    {
+      "threshold": 0.65,
+      "coverage": 0.721875,
+      "accepted": 231,
+      "accuracy": 0.8787878787878788,
+      "macro_f1": 0.8591721092224316
+    },
+    {
+      "threshold": 0.75,
+      "coverage": 0.625,
+      "accepted": 200,
+      "accuracy": 0.905,
+      "macro_f1": 0.8772956624329564
+    },
+    {
+      "threshold": 0.85,
+      "coverage": 0.490625,
+      "accepted": 157,
+      "accuracy": 0.9490445859872612,
+      "macro_f1": 0.9157182835820896
+    },
+    {
+      "threshold": 0.95,
+      "coverage": 0.334375,
+      "accepted": 107,
+      "accuracy": 0.9813084112149533,
+      "macro_f1": 0.899386845039019
+    }
+  ],
+  "policy_validation_coverage": [
+    {
+      "threshold": 0,
+      "coverage": 0.9625,
+      "accepted": 231,
+      "accuracy": 0.7922077922077922,
+      "macro_f1": 0.7831837707308908
+    },
+    {
+      "threshold": 0.4,
+      "coverage": 0.9625,
+      "accepted": 231,
+      "accuracy": 0.7922077922077922,
+      "macro_f1": 0.7831837707308908
+    },
+    {
+      "threshold": 0.55,
+      "coverage": 0.9083333333333333,
+      "accepted": 218,
+      "accuracy": 0.8027522935779816,
+      "macro_f1": 0.7915720406610569
+    },
+    {
+      "threshold": 0.65,
+      "coverage": 0.8,
+      "accepted": 192,
+      "accuracy": 0.8489583333333334,
+      "macro_f1": 0.8277848402987447
+    },
+    {
+      "threshold": 0.75,
+      "coverage": 0.6375,
+      "accepted": 153,
+      "accuracy": 0.8823529411764706,
+      "macro_f1": 0.8333531333531334
+    },
+    {
+      "threshold": 0.85,
+      "coverage": 0.5,
+      "accepted": 120,
+      "accuracy": 0.9333333333333333,
+      "macro_f1": 0.8504649081854964
+    },
+    {
+      "threshold": 0.95,
+      "coverage": 0.3625,
+      "accepted": 87,
+      "accuracy": 0.9770114942528736,
+      "macro_f1": 0.743691337128789
+    }
+  ],
+  "feature_importance": [
+    {
+      "feature": "loss_win_holding_ratio",
+      "importance": 0.24017318366268317,
+      "std": 0.01698869435685388
+    },
+    {
+      "feature": "median_gap_minutes",
+      "importance": 0.08619006744589738,
+      "std": 0.021271142634046416
+    },
+    {
+      "feature": "trades_per_day",
+      "importance": 0.061556384900665104,
+      "std": 0.015032818153256867
+    },
+    {
+      "feature": "post_loss_size_ratio",
+      "importance": 0.04821799573658483,
+      "std": 0.011494392849912693
+    },
+    {
+      "feature": "post_win_gap_ratio",
+      "importance": 0.0390753612764911,
+      "std": 0.0035047412749891938
+    },
+    {
+      "feature": "post_win_size_ratio",
+      "importance": 0.02697299917611031,
+      "std": 0.00526264788312474
+    },
+    {
+      "feature": "post_loss_gap_ratio",
+      "importance": 0.02317177340945158,
+      "std": 0.004668779235606087
+    },
+    {
+      "feature": "size_cv",
+      "importance": 0.021409541155641042,
+      "std": 0.010749791191999208
+    },
+    {
+      "feature": "post_loss_increase_fraction",
+      "importance": 0.017226622174594898,
+      "std": 0.007992289797110488
+    },
+    {
+      "feature": "max_size_to_median",
+      "importance": 0.01715462954821496,
+      "std": 0.008320264615412902
+    },
+    {
+      "feature": "daily_count_cv",
+      "importance": 0.013745374329961013,
+      "std": 0.005364178340005385
+    },
+    {
+      "feature": "holding_cv",
+      "importance": 0.011877987636245434,
+      "std": 0.006456140826041914
+    },
+    {
+      "feature": "win_fraction",
+      "importance": 0.010542679182063152,
+      "std": 0.00782493058796595
+    },
+    {
+      "feature": "max_trades_hour",
+      "importance": 0.0061759859375732475,
+      "std": 0.004062459406570152
+    },
+    {
+      "feature": "gap_cv",
+      "importance": 0.005323767913962408,
+      "std": 0.0018681338899836054
+    },
+    {
+      "feature": "max_loss_streak_fraction",
+      "importance": 0.0036958431114410438,
+      "std": 0.0025735493697477034
+    },
+    {
+      "feature": "streak_size_ratio",
+      "importance": 0.002995058742922452,
+      "std": 0.006441168521696851
+    },
+    {
+      "feature": "loss_win_magnitude_ratio",
+      "importance": 0.0029869327868866646,
+      "std": 0.001701955651130718
+    },
+    {
+      "feature": "median_holding_minutes",
+      "importance": 0.00051943706023454,
+      "std": 0.012316971470422638
+    },
+    {
+      "feature": "burst_fraction",
+      "importance": 0.0,
+      "std": 0.0
+    }
+  ],
+  "robustness": [
+    {
+      "perturbation": "Remove 10% of trades",
+      "histories": 80,
+      "comparable_predictions": 80,
+      "agreement": 0.95,
+      "mean_probability_change": 0.02592386763890129,
+      "coverage": 0.825
+    },
+    {
+      "perturbation": "Jitter timestamps by 30 seconds",
+      "histories": 80,
+      "comparable_predictions": 80,
+      "agreement": 1.0,
+      "mean_probability_change": 0.000274400186561097,
+      "coverage": 0.875
+    },
+    {
+      "perturbation": "2% position-size noise",
+      "histories": 80,
+      "comparable_predictions": 80,
+      "agreement": 1.0,
+      "mean_probability_change": 0.00466757098767424,
+      "coverage": 0.875
+    },
+    {
+      "perturbation": "First half of history",
+      "histories": 80,
+      "comparable_predictions": 80,
+      "agreement": 0.8625,
+      "mean_probability_change": 0.04820339509018304,
+      "coverage": 0.775
+    },
+    {
+      "perturbation": "Duplicate 10% of trades",
+      "histories": 80,
+      "comparable_predictions": 80,
+      "agreement": 1.0,
+      "mean_probability_change": 4.104849468002834e-17,
+      "coverage": 0.875
+    },
+    {
+      "perturbation": "Missing holding duration",
+      "histories": 80,
+      "comparable_predictions": 0,
+      "agreement": null,
+      "mean_probability_change": null,
+      "coverage": 0.0
+    }
+  ],
+  "shift": {
+    "macro_f1": 0.704435765701948,
+    "weighted_f1": 0.704435765701948,
+    "accuracy": 0.7,
+    "balanced_accuracy": 0.7,
+    "per_class": {
+      "calm_trader": {
+        "precision": 0.5221238938053098,
+        "recall": 0.7375,
+        "f1": 0.6113989637305699,
+        "support": 80
+      },
+      "loss_aversion": {
+        "precision": 0.7875,
+        "recall": 0.7875,
+        "f1": 0.7875,
+        "support": 80
+      },
+      "overtrader": {
+        "precision": 0.6612903225806451,
+        "recall": 0.5125,
+        "f1": 0.5774647887323944,
+        "support": 80
+      },
+      "revenge_trader": {
+        "precision": 0.9384615384615385,
+        "recall": 0.7625,
+        "f1": 0.8413793103448276,
+        "support": 80
+      }
+    },
+    "confusion_matrix": [
+      [
+        59,
+        11,
+        8,
+        2
+      ],
+      [
+        10,
+        63,
+        5,
+        2
+      ],
+      [
+        34,
+        5,
+        41,
+        0
+      ],
+      [
+        10,
+        1,
+        8,
+        61
+      ]
+    ],
+    "roc_auc_ovr_macro": 0.9093229166666666,
+    "pr_auc_macro": 0.7837154932323117,
+    "coverage": [
+      {
+        "threshold": 0,
+        "coverage": 0.78125,
+        "accepted": 250,
+        "accuracy": 0.708,
+        "macro_f1": 0.712620416778492
+      },
+      {
+        "threshold": 0.4,
+        "coverage": 0.78125,
+        "accepted": 250,
+        "accuracy": 0.708,
+        "macro_f1": 0.712620416778492
+      },
+      {
+        "threshold": 0.55,
+        "coverage": 0.703125,
+        "accepted": 225,
+        "accuracy": 0.7555555555555555,
+        "macro_f1": 0.7565870218044131
+      },
+      {
+        "threshold": 0.65,
+        "coverage": 0.553125,
+        "accepted": 177,
+        "accuracy": 0.807909604519774,
+        "macro_f1": 0.8013992317048179
+      },
+      {
+        "threshold": 0.75,
+        "coverage": 0.4125,
+        "accepted": 132,
+        "accuracy": 0.8636363636363636,
+        "macro_f1": 0.8459467466931723
+      },
+      {
+        "threshold": 0.85,
+        "coverage": 0.296875,
+        "accepted": 95,
+        "accuracy": 0.9473684210526315,
+        "macro_f1": 0.9289990923055439
+      },
+      {
+        "threshold": 0.95,
+        "coverage": 0.159375,
+        "accepted": 51,
+        "accuracy": 0.9803921568627451,
+        "macro_f1": 0.9428571428571428
+      }
+    ]
+  },
+  "limitations": [
+    "Synthetic regime recovery is not real-world psychological or financial validity.",
+    "Same generator family underlies in-distribution training and test; latent regimes overlap but simplify people.",
+    "Balanced class priors are artificial. Uncertainty intervals condition on this simulator and class mixture.",
+    "Selection-set model comparisons are not independent final-test estimates.",
+    "Holding evidence and completion-time semantics are required; arbitrary broker executions are unsupported.",
+    "Range checks cannot detect all joint distribution shift; calibration need not transfer to real users.",
+    "Counterfactual and median-replacement sensitivities do not imply causal effects or better returns."
+  ],
+  "experiment": {
+    "timestamp": "2026-09-17T00:49:45.964374+00:00",
+    "git_commit": "0a7e46fedc5ec8121588ae92f6fe78033d702b2d",
+    "source_sha256": {
+      "__init__.py": "6c5b48e144c9da167fd63aa4e4bc22d7d0f5d23a9609cdc82f22805c5c63b185",
+      "evaluation.py": "fca1a04bca1860bf4b08f3868d637b4291b4bb6dfdda532e8a17f8dfcbab6edd",
+      "features.py": "38db86d99aab55b40b193f8e243f7cfb32ae90258cf6f45d5e3d202dace8b106",
+      "inference.py": "76be66c238544c6de9d30fac87315cc4e8f5ffbf58c0e7b9c5c38390024de283",
+      "models.py": "ae9ff38c930cb5619f2e994c745f2f8edf3c1a449d713cd9a3af0dffe7417001",
+      "simulator.py": "d4cf3e251af5a194be640dbd73262fba3a772765891895b40ac8828bd9e511f0",
+      "training.py": "af8e3ec4445407ef126131380385abc72d77a79a89e992683c189823c8577b96",
+      "worker.py": "7a96db3c60d2e33cf285b8fd596708538ee96861e15331dbfcca8add753d4083"
+    },
+    "feature_version": "1.0.0",
+    "simulator_version": "1.0.0",
+    "seeds": {
+      "train": 1701,
+      "selection": 2701,
+      "calibration": 3701,
+      "policy": 4701,
+      "test": 5701,
+      "shift": 6701
+    },
+    "smoke_test": false,
+    "selected_model": "Logistic regression",
+    "hyperparameters": {
+      "C": 1.0
+    },
+    "calibration_method": "Temperature scaling",
+    "temperature": 1.0328939714592238,
+    "fitted_temperature": 1.0328939714592238,
+    "policy": {
+      "min_trades": 30,
+      "min_wins": 5,
+      "min_losses": 5,
+      "confidence_threshold": 0.55,
+      "margin_threshold": 0.1
+    },
+    "selection_rule": "Maximum selection macro F1; first/simplest wins exact ties; no refit.",
+    "versions": {
+      "python": "3.14.3",
+      "numpy": "2.4.2",
+      "pandas": "3.0.0",
+      "sklearn": "1.8.0",
+      "scipy": "1.17.1"
+    },
+    "artifact_sha256": "707b766cfbf8da2eece97833d057e9b746ab83f78c1fe7f2b40d9b778a7b4f9f"
+  }
+}

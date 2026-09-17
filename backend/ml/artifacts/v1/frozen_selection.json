@@ -1,0 +1,605 @@
+{
+  "timestamp": "2026-09-17T00:49:45.964374+00:00",
+  "git_commit": "0a7e46fedc5ec8121588ae92f6fe78033d702b2d",
+  "source_sha256": {
+    "__init__.py": "6c5b48e144c9da167fd63aa4e4bc22d7d0f5d23a9609cdc82f22805c5c63b185",
+    "evaluation.py": "fca1a04bca1860bf4b08f3868d637b4291b4bb6dfdda532e8a17f8dfcbab6edd",
+    "features.py": "38db86d99aab55b40b193f8e243f7cfb32ae90258cf6f45d5e3d202dace8b106",
+    "inference.py": "76be66c238544c6de9d30fac87315cc4e8f5ffbf58c0e7b9c5c38390024de283",
+    "models.py": "ae9ff38c930cb5619f2e994c745f2f8edf3c1a449d713cd9a3af0dffe7417001",
+    "simulator.py": "d4cf3e251af5a194be640dbd73262fba3a772765891895b40ac8828bd9e511f0",
+    "training.py": "af8e3ec4445407ef126131380385abc72d77a79a89e992683c189823c8577b96",
+    "worker.py": "7a96db3c60d2e33cf285b8fd596708538ee96861e15331dbfcca8add753d4083"
+  },
+  "feature_version": "1.0.0",
+  "simulator_version": "1.0.0",
+  "seeds": {
+    "train": 1701,
+    "selection": 2701,
+    "calibration": 3701,
+    "policy": 4701,
+    "test": 5701,
+    "shift": 6701
+  },
+  "smoke_test": false,
+  "selected_model": "Logistic regression",
+  "hyperparameters": {
+    "C": 1.0
+  },
+  "candidates": [
+    {
+      "name": "Logistic regression",
+      "hyperparameters": {
+        "C": 0.1
+      },
+      "validation": {
+        "macro_f1": 0.8165758320961651,
+        "weighted_f1": 0.8165758320961652,
+        "accuracy": 0.8166666666666667,
+        "balanced_accuracy": 0.8166666666666665,
+        "per_class": {
+          "calm_trader": {
+            "precision": 0.7735849056603774,
+            "recall": 0.6833333333333333,
+            "f1": 0.7256637168141593,
+            "support": 60
+          },
+          "loss_aversion": {
+            "precision": 0.9107142857142857,
+            "recall": 0.85,
+            "f1": 0.8793103448275862,
+            "support": 60
+          },
+          "overtrader": {
+            "precision": 0.7101449275362319,
+            "recall": 0.8166666666666667,
+            "f1": 0.7596899224806202,
+            "support": 60
+          },
+          "revenge_trader": {
+            "precision": 0.8870967741935484,
+            "recall": 0.9166666666666666,
+            "f1": 0.9016393442622951,
+            "support": 60
+          }
+        },
+        "confusion_matrix": [
+          [
+            41,
+            4,
+            12,
+            3
+          ],
+          [
+            2,
+            51,
+            5,
+            2
+          ],
+          [
+            8,
+            1,
+            49,
+            2
+          ],
+          [
+            2,
+            0,
+            3,
+            55
+          ]
+        ],
+        "roc_auc_ovr_macro": 0.9567592592592593,
+        "pr_auc_macro": 0.8929574081228748
+      }
+    },
+    {
+      "name": "Logistic regression",
+      "hyperparameters": {
+        "C": 1.0
+      },
+      "validation": {
+        "macro_f1": 0.8237484272164151,
+        "weighted_f1": 0.8237484272164151,
+        "accuracy": 0.825,
+        "balanced_accuracy": 0.825,
+        "per_class": {
+          "calm_trader": {
+            "precision": 0.7692307692307693,
+            "recall": 0.6666666666666666,
+            "f1": 0.7142857142857143,
+            "support": 60
+          },
+          "loss_aversion": {
+            "precision": 0.9122807017543859,
+            "recall": 0.8666666666666667,
+            "f1": 0.8888888888888888,
+            "support": 60
+          },
+          "overtrader": {
+            "precision": 0.7352941176470589,
+            "recall": 0.8333333333333334,
+            "f1": 0.78125,
+            "support": 60
+          },
+          "revenge_trader": {
+            "precision": 0.8888888888888888,
+            "recall": 0.9333333333333333,
+            "f1": 0.9105691056910569,
+            "support": 60
+          }
+        },
+        "confusion_matrix": [
+          [
+            40,
+            4,
+            13,
+            3
+          ],
+          [
+            3,
+            52,
+            3,
+            2
+          ],
+          [
+            7,
+            1,
+            50,
+            2
+          ],
+          [
+            2,
+            0,
+            2,
+            56
+          ]
+        ],
+        "roc_auc_ovr_macro": 0.9544444444444443,
+        "pr_auc_macro": 0.8857945419816607
+      }
+    },
+    {
+      "name": "Random Forest",
+      "hyperparameters": {
+        "min_samples_leaf": 3,
+        "n_estimators": 160
+      },
+      "validation": {
+        "macro_f1": 0.8173084508607403,
+        "weighted_f1": 0.8173084508607403,
+        "accuracy": 0.8166666666666667,
+        "balanced_accuracy": 0.8166666666666667,
+        "per_class": {
+          "calm_trader": {
+            "precision": 0.7076923076923077,
+            "recall": 0.7666666666666667,
+            "f1": 0.736,
+            "support": 60
+          },
+          "loss_aversion": {
+            "precision": 0.9285714285714286,
+            "recall": 0.8666666666666667,
+            "f1": 0.896551724137931,
+            "support": 60
+          },
+          "overtrader": {
+            "precision": 0.7543859649122807,
+            "recall": 0.7166666666666667,
+            "f1": 0.7350427350427351,
+            "support": 60
+          },
+          "revenge_trader": {
+            "precision": 0.8870967741935484,
+            "recall": 0.9166666666666666,
+            "f1": 0.9016393442622951,
+            "support": 60
+          }
+        },
+        "confusion_matrix": [
+          [
+            46,
+            3,
+            9,
+            2
+          ],
+          [
+            3,
+            52,
+            3,
+            2
+          ],
+          [
+            13,
+            1,
+            43,
+            3
+          ],
+          [
+            3,
+            0,
+            2,
+            55
+          ]
+        ],
+        "roc_auc_ovr_macro": 0.9559953703703704,
+        "pr_auc_macro": 0.8888336770991154
+      }
+    },
+    {
+      "name": "Random Forest",
+      "hyperparameters": {
+        "min_samples_leaf": 8,
+        "n_estimators": 160
+      },
+      "validation": {
+        "macro_f1": 0.821554895302773,
+        "weighted_f1": 0.8215548953027729,
+        "accuracy": 0.8208333333333333,
+        "balanced_accuracy": 0.8208333333333333,
+        "per_class": {
+          "calm_trader": {
+            "precision": 0.7058823529411765,
+            "recall": 0.8,
+            "f1": 0.75,
+            "support": 60
+          },
+          "loss_aversion": {
+            "precision": 0.9259259259259259,
+            "recall": 0.8333333333333334,
+            "f1": 0.8771929824561403,
+            "support": 60
+          },
+          "overtrader": {
+            "precision": 0.8148148148148148,
+            "recall": 0.7333333333333333,
+            "f1": 0.7719298245614035,
+            "support": 60
+          },
+          "revenge_trader": {
+            "precision": 0.859375,
+            "recall": 0.9166666666666666,
+            "f1": 0.8870967741935484,
+            "support": 60
+          }
+        },
+        "confusion_matrix": [
+          [
+            48,
+            3,
+            6,
+            3
+          ],
+          [
+            5,
+            50,
+            2,
+            3
+          ],
+          [
+            12,
+            1,
+            44,
+            3
+          ],
+          [
+            3,
+            0,
+            2,
+            55
+          ]
+        ],
+        "roc_auc_ovr_macro": 0.9588425925925925,
+        "pr_auc_macro": 0.8939153595230123
+      }
+    },
+    {
+      "name": "Histogram gradient boosting",
+      "hyperparameters": {
+        "max_leaf_nodes": 7,
+        "max_iter": 120
+      },
+      "validation": {
+        "macro_f1": 0.813606659662979,
+        "weighted_f1": 0.8136066596629788,
+        "accuracy": 0.8125,
+        "balanced_accuracy": 0.8125,
+        "per_class": {
+          "calm_trader": {
+            "precision": 0.7017543859649122,
+            "recall": 0.6666666666666666,
+            "f1": 0.6837606837606838,
+            "support": 60
+          },
+          "loss_aversion": {
+            "precision": 0.896551724137931,
+            "recall": 0.8666666666666667,
+            "f1": 0.8813559322033898,
+            "support": 60
+          },
+          "overtrader": {
+            "precision": 0.7014925373134329,
+            "recall": 0.7833333333333333,
+            "f1": 0.7401574803149606,
+            "support": 60
+          },
+          "revenge_trader": {
+            "precision": 0.9655172413793104,
+            "recall": 0.9333333333333333,
+            "f1": 0.9491525423728814,
+            "support": 60
+          }
+        },
+        "confusion_matrix": [
+          [
+            40,
+            4,
+            15,
+            1
+          ],
+          [
+            4,
+            52,
+            4,
+            0
+          ],
+          [
+            10,
+            2,
+            47,
+            1
+          ],
+          [
+            3,
+            0,
+            1,
+            56
+          ]
+        ],
+        "roc_auc_ovr_macro": 0.9513425925925925,
+        "pr_auc_macro": 0.8645315423082918
+      }
+    },
+    {
+      "name": "Histogram gradient boosting",
+      "hyperparameters": {
+        "max_leaf_nodes": 15,
+        "max_iter": 120
+      },
+      "validation": {
+        "macro_f1": 0.8005042492359948,
+        "weighted_f1": 0.8005042492359948,
+        "accuracy": 0.8,
+        "balanced_accuracy": 0.8,
+        "per_class": {
+          "calm_trader": {
+            "precision": 0.6833333333333333,
+            "recall": 0.6833333333333333,
+            "f1": 0.6833333333333333,
+            "support": 60
+          },
+          "loss_aversion": {
+            "precision": 0.875,
+            "recall": 0.8166666666666667,
+            "f1": 0.8448275862068966,
+            "support": 60
+          },
+          "overtrader": {
+            "precision": 0.7142857142857143,
+            "recall": 0.75,
+            "f1": 0.7317073170731707,
+            "support": 60
+          },
+          "revenge_trader": {
+            "precision": 0.9344262295081968,
+            "recall": 0.95,
+            "f1": 0.9421487603305785,
+            "support": 60
+          }
+        },
+        "confusion_matrix": [
+          [
+            41,
+            5,
+            13,
+            1
+          ],
+          [
+            5,
+            49,
+            4,
+            2
+          ],
+          [
+            12,
+            2,
+            45,
+            1
+          ],
+          [
+            2,
+            0,
+            1,
+            57
+          ]
+        ],
+        "roc_auc_ovr_macro": 0.9490046296296295,
+        "pr_auc_macro": 0.8604512379522712
+      }
+    }
+  ],
+  "calibration_method": "Temperature scaling",
+  "temperature": 1.0328939714592238,
+  "fitted_temperature": 1.0328939714592238,
+  "policy": {
+    "min_trades": 30,
+    "min_wins": 5,
+    "min_losses": 5,
+    "confidence_threshold": 0.55,
+    "margin_threshold": 0.1
+  },
+  "selection_rule": "Maximum selection macro F1; first/simplest wins exact ties; no refit.",
+  "versions": {
+    "python": "3.14.3",
+    "numpy": "2.4.2",
+    "pandas": "3.0.0",
+    "sklearn": "1.8.0",
+    "scipy": "1.17.1"
+  },
+  "policy_validation": {
+    "raw": {
+      "brier": 0.3062467451057382,
+      "ece": 0.0702293361925154,
+      "log_loss": 0.5198773342719768,
+      "reliability": [
+        {
+          "lower": 0.0,
+          "upper": 0.1,
+          "count": 0,
+          "confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.2,
+          "count": 0,
+          "confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.2,
+          "upper": 0.3,
+          "count": 0,
+          "confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.3,
+          "upper": 0.4,
+          "count": 2,
+          "confidence": 0.3635860650765267,
+          "accuracy": 0.5
+        },
+        {
+          "lower": 0.4,
+          "upper": 0.5,
+          "count": 7,
+          "confidence": 0.46348561572592617,
+          "accuracy": 0.42857142857142855
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.6,
+          "count": 23,
+          "confidence": 0.5578586737575396,
+          "accuracy": 0.43478260869565216
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.7,
+          "count": 25,
+          "confidence": 0.656625906296279,
+          "accuracy": 0.76
+        },
+        {
+          "lower": 0.7,
+          "upper": 0.8,
+          "count": 43,
+          "confidence": 0.7493420068132102,
+          "accuracy": 0.5813953488372093
+        },
+        {
+          "lower": 0.8,
+          "upper": 0.9,
+          "count": 30,
+          "confidence": 0.8533388101016449,
+          "accuracy": 0.8333333333333334
+        },
+        {
+          "lower": 0.9,
+          "upper": 1.0,
+          "count": 110,
+          "confidence": 0.9827349188294677,
+          "accuracy": 0.9545454545454546
+        }
+      ]
+    },
+    "scaled": {
+      "brier": 0.30507345958175214,
+      "ece": 0.05862349608442211,
+      "log_loss": 0.517148491430976,
+      "reliability": [
+        {
+          "lower": 0.0,
+          "upper": 0.1,
+          "count": 0,
+          "confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.2,
+          "count": 0,
+          "confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.2,
+          "upper": 0.3,
+          "count": 0,
+          "confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.3,
+          "upper": 0.4,
+          "count": 3,
+          "confidence": 0.374452572689236,
+          "accuracy": 0.3333333333333333
+        },
+        {
+          "lower": 0.4,
+          "upper": 0.5,
+          "count": 6,
+          "confidence": 0.468655446055362,
+          "accuracy": 0.5
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.6,
+          "count": 24,
+          "confidence": 0.5539857351761831,
+          "accuracy": 0.4583333333333333
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.7,
+          "count": 29,
+          "confidence": 0.6585103991713022,
+          "accuracy": 0.7241379310344828
+        },
+        {
+          "lower": 0.7,
+          "upper": 0.8,
+          "count": 41,
+          "confidence": 0.7494120801095232,
+          "accuracy": 0.6097560975609756
+        },
+        {
+          "lower": 0.8,
+          "upper": 0.9,
+          "count": 29,
+          "confidence": 0.8530835651231069,
+          "accuracy": 0.8275862068965517
+        },
+        {
+          "lower": 0.9,
+          "upper": 1.0,
+          "count": 108,
+          "confidence": 0.9823522155296721,
+          "accuracy": 0.9537037037037037
+        }
+      ]
+    }
+  }
+}

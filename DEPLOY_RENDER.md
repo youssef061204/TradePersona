@@ -1,72 +1,47 @@
-# Deploying The Backend To Render
+# Deploy the TradePersona API
 
-This repo is set up to deploy the backend as a Docker-based Render web service.
+The Docker service runs Express and one persistent Python inference process. It loads the versioned, trusted `backend/ml/artifacts/v1/model.joblib`; it never trains at startup. `/api/evaluation` reads the generated artifact beside the model. `/healthz` is a process liveness check; verify an upload and the evaluation endpoint separately after deployment.
 
-## What Render will deploy
+## Prepare and deploy
 
-- Service: `tradepersona-backend`
-- Config file: [render.yaml](./render.yaml)
-- Docker image: [backend/Dockerfile](./backend/Dockerfile)
-- Health check: `/healthz`
+1. Complete the README setup, run tests, and ensure the model and evaluation artifacts exist. If intentionally regenerating the benchmark, run the explicit training command in the README before building.
+2. Build locally with `docker build -t tradepersona-api backend` and run with `docker run --rm -p 3001:10000 -e PORT=10000 -e CORS_ORIGINS=http://localhost:3000 tradepersona-api`.
+3. Push the reviewed repository to your GitHub repository, then create a Render Blueprint using `render.yaml`.
+4. Set `CORS_ORIGINS` to the exact HTTPS frontend origin, such as `https://your-site.vercel.app`. Multiple approved origins are comma-separated; wildcards are unsupported. Production denies browser origins if this is unset.
+5. Set the frontend's `NEXT_PUBLIC_API_BASE_URL` to the deployed API origin and rebuild the frontend. Confirm `/healthz`, `/api/evaluation`, and a sample CSV upload from the frontend.
 
-## Before you deploy
+No Gemini or Snowflake credentials are required for the full default analytics flow. Supply secrets only in the hosting provider's environment settings. `.env`, uploads, logs and local environments must not enter the image. The image runs as an unprivileged user.
 
-1. Push this repo to GitHub.
-2. Make sure the backend secrets are ready. You will need some or all of:
-   - `GEMINI_API_KEY`
-   - `OPENROUTER_API_KEY` or `OPEN_ROUTER_KEY`
-   - `SNOWFLAKE_ACCOUNT`
-   - `SNOWFLAKE_USERNAME`
-   - `SNOWFLAKE_PASSWORD`
-   - `SNOWFLAKE_DATABASE`
-   - `SNOWFLAKE_SCHEMA`
-   - `SNOWFLAKE_WAREHOUSE`
+## Retention and capacity
 
-You can copy the variable names from [backend/.env.example](./backend/.env.example).
+Raw CSV uploads stay in request/worker memory and are never written to disk. Accepted files are UTF-8 CSV, at most 5 MB and 50,000 rows. Python owns structural and numeric validation. One worker handles analysis, with at most four queued jobs and a 30-second total deadline. There are at most five admitted uploads. Worker failure clears pending jobs and the next request starts a new worker.
 
-## Deploy with Render Blueprint
+Only analysis results are retained: at most 100 memory sessions, for a fixed 30 minutes. Oldest sessions are evicted at capacity. Restart/redeploy deletes all sessions. `DELETE /api/analysis/:sessionId` deletes one result. A session UUID is a bearer capability: anyone with it can read/delete that result, so do not share it or log request URLs. Configure your reverse proxy/provider access logging accordingly. There are no accounts or durable history. Horizontal replicas would need shared storage or session affinity; this deployment intentionally uses one process.
 
-1. In Render, open `New > Blueprint`.
-2. Connect your GitHub repo.
-3. Render should detect [render.yaml](./render.yaml).
-4. Confirm the new service and create the Blueprint instance.
-5. When Render prompts for secret values, fill them in.
-6. Wait for the deploy to finish, then open the generated `onrender.com` URL.
+## Optional Gemini curation
 
-## Connect Vercel frontend to Render backend
+Enable with `ENABLE_GEMINI=true`, `GEMINI_API_KEY`, and an explicit `GEMINI_MODEL` supported by the provider. `POST /api/analysis/:sessionId/coaching` requires JSON `{"useGemini":true}`. This is consent to send aggregate evidence, predictions and explanations to Gemini. The default UI does not invoke it automatically.
 
-In your Vercel frontend project, set:
+Gemini can only select and order IDs of educational actions already derived deterministically. Its prose and numbers are never displayed. An abstained/unavailable prediction bypasses Gemini; invalid selections, provider errors and timeouts return deterministic coaching. This intentionally constrains the [generateContent API](https://ai.google.dev/api/generate-content), rather than trusting a prompt to prevent hallucinations. The summary and original analysis are unchanged.
 
-```env
-NEXT_PUBLIC_API_BASE_URL=https://your-render-service.onrender.com
+## Optional Snowflake aggregate analytics
+
+Enable with `ENABLE_AGGREGATE_ANALYTICS=true` and the `SNOWFLAKE_*` variables in `.env.example`. Use an account/credential permitted by your organization's Snowflake authentication policy and a least-privilege role. Configure the database, schema and warehouse, and pre-create the table; the application does not create warehouse resources:
+
+```sql
+CREATE TABLE TRADEPERSONA_AGGREGATES (
+  CREATED_AT TIMESTAMP_LTZ,
+  SCHEMA_VERSION VARCHAR,
+  MODEL_VERSION VARCHAR,
+  STATUS VARCHAR,
+  LABEL VARCHAR,
+  CONFIDENCE FLOAT,
+  USABLE_ROWS INTEGER
+);
 ```
 
-Then redeploy the frontend.
+`POST /api/analysis/:sessionId/analytics` requires JSON `{"consent":true}`. It stores only the columns above, with the time of aggregate insertion, using bound SQL values. It never stores raw trades, trade timestamps, assets, monetary values, account identifiers or session capabilities. Explicitly opted-in aggregate records are separate from the ephemeral analysis; deleting a session does not remove an aggregate record. Establish your own warehouse retention policy before enabling this integration. A repeated successful request for the same live session does not insert again; network ambiguity can still require warehouse deduplication in a production deployment.
 
-## Important note about uploads on free Render
+The application disables [Snowflake driver logging](https://docs.snowflake.com/en/developer-guide/node-js/nodejs-driver-logs) to avoid financial data in logs. The optional SEC 13F ingestion script remains an independent public-holdings utility; quarterly holdings cannot establish a person's trading psychology and do not label or train the behavioral model.
 
-Free Render web services use an ephemeral filesystem. That means uploaded CSV files and any in-memory session data can disappear after a restart or redeploy.
-
-This app will still run on the free tier, but uploads are best treated as temporary demo data.
-
-## If you want uploads to persist
-
-Render only supports persistent disks on paid web services.
-
-If you upgrade to a paid instance:
-
-1. Add a disk in the Render dashboard.
-2. Mount it at `/app/data`.
-3. Set this environment variable on the backend service:
-
-```env
-UPLOADS_DIR=/app/data/uploads
-```
-
-4. Redeploy the service.
-
-## Notes
-
-- The backend Docker image installs both Node.js dependencies and Python packages from [backend/requirements.txt](./backend/requirements.txt).
-- Python packages are installed into a container-local virtualenv so Render's Debian base image does not block `pip` with PEP 668.
-- The app listens on `PORT`, which Render sets to `10000` in [render.yaml](./render.yaml).
+The Snowflake dependency's `toml` parser is overridden to patched v4.2+ (same CommonJS `parse` interface) because its default v3 dependency has published vulnerabilities. Keep the lockfile and dependency audit in CI. External Gemini/Snowflake operations require live credentials and are not validated by the default offline test suite.

@@ -1,6 +1,14 @@
 node_modules
 npm-debug.log*
 .env
+.env.*
+!.env.example
+.venv
+datasets
+ml/artifacts/smoke
+ml/artifacts/reproduction*
+tests
+test
 uploads
 *.log
 *.err

@@ -1,0 +1,13 @@
+# Initial architecture audit (before implementation)
+
+Next.js 16/React 19 uploads to Express. Express writes raw and normalized files, invokes Python per request, caches raw trades and a global last-upload response, optionally persists to Snowflake, and makes Gemini/OpenRouter calls. Persona selection gates the analytics. Dashboard route is a placeholder; profile route combines charts and coaching. Render Docker runs Node and Python; no root README, test suite or CI.
+
+`ml_classifier.py` fits a 200-tree Random Forest on every fresh Python process using all rows of four filename-labelled CSVs. Four per-trade features: reciprocal inter-trade velocity, previous-loss velocity, size ratio and absolute loss. There is no evaluation, calibration, artifact or split. Predicted hard-vote proportions across trades are presented as bias percentages. These are neither history-level class probabilities nor validated behavioral diagnoses.
+
+`bias_engine.py` has useful deterministic activity, loss-streak and size-response calculations, but absolute loss/win ratio is misleadingly named disposition ratio. FIFO holding reconstruction assumes execution semantics while CSVs carry per-row P/L; outcomes may not be known at the next entry timestamp. JavaScript metrics, bias and alignment files repeat different formulas. Silent bad-row dropping, zero filling, stride sampling and fallback calculations can change the behavior being measured.
+
+Investor vectors in the 13F ingestion script derive from quarterly holdings overlap. They do not establish investor psychology or intraday post-loss behavior. Alignment fallback profiles and normalized scales are hand-designed. Preserve SEC/Snowflake utilities as optional research integrations with clear provenance, not ground truth training labels. Gemini currently generates both interpretation and classification-like fields; it must no longer set measured facts or override abstention.
+
+Security concerns: global last-upload endpoint crosses user boundaries; raw uploads retained without TTL; normalized server paths returned; permissive CORS; logs include filenames and database SQL/binds. Preserve existing charts' explanatory intent, sample-download flow, Node/Python split and optional warehouse integration, while replacing unsafe serving paths and duplicated production formulas.
+
+Dataset forensics are in DATA_AUDIT.md. Existing sources do not establish independent labeled traders, so they cannot justify real-world generalization claims. A disclosed simulator benchmark is needed; labels describe assigned generation regimes, not observed mental states.

@@ -13,23 +13,9 @@ services:
     envVars:
       - key: PORT
         value: "10000"
-      - key: GEMINI_API_KEY
+      - key: CORS_ORIGINS
         sync: false
-      - key: OPENROUTER_API_KEY
-        sync: false
-      - key: OPEN_ROUTER_KEY
-        sync: false
-      - key: OPENROUTER_MODEL
-        value: openai/gpt-4o-mini
-      - key: SNOWFLAKE_ACCOUNT
-        sync: false
-      - key: SNOWFLAKE_USERNAME
-        sync: false
-      - key: SNOWFLAKE_PASSWORD
-        sync: false
-      - key: SNOWFLAKE_DATABASE
-        sync: false
-      - key: SNOWFLAKE_SCHEMA
-        sync: false
-      - key: SNOWFLAKE_WAREHOUSE
-        sync: false
+      - key: ENABLE_GEMINI
+        value: "false"
+      - key: ENABLE_AGGREGATE_ANALYTICS
+        value: "false"
