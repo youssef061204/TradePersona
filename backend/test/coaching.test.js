@@ -22,75 +22,19 @@ const analysis = {
   },
 };
 test("Gemini cannot add prose, numbers, actions, duplicates, or change uncertainty", async () => {
-  assert.equal(
-    validateSelection({ action_ids: [3] }, analysis.coaching.actions),
-    null,
-  );
-  assert.equal(
-    validateSelection({ action_ids: [0, 0] }, analysis.coaching.actions),
-    null,
-  );
-  const request = async () => ({
-    ok: true,
-    json: async () => ({
-      candidates: [
-        {
-          content: {
-            parts: [
-              {
-                text: JSON.stringify({
-                  action_ids: [1],
-                  summary: "Guaranteed 100% returns",
-                }),
-              },
-            ],
-          },
-        },
-      ],
-    }),
-  });
-  const result = await curateCoaching(
-    analysis,
-    { GEMINI_MODEL: "configured-model" },
-    request,
-  );
+  assert.equal(validateSelection({ action_ids: [3] }, analysis.coaching.actions), null);
+  assert.equal(validateSelection({ action_ids: [0, 0] }, analysis.coaching.actions), null);
+  const request = async () => ({ ok: true, json: async () => ({ candidates: [{ content: { parts: [{ text: JSON.stringify({ action_ids: [1], summary: "Guaranteed 100% returns" }) }] } }] }) });
+  const result = await curateCoaching(analysis, { GEMINI_MODEL: "configured-model" }, request);
   assert.equal(result.summary, analysis.coaching.summary);
   assert.deepEqual(result.actions, [analysis.coaching.actions[1]]);
-  let called = false;
-  const abstained = await curateCoaching(
-    { ...analysis, prediction: { status: "abstained" } },
-    {},
-    async () => {
-      called = true;
-    },
-  );
-  assert.equal(called, false);
-  assert.equal(abstained.source, "deterministic");
+  const abstained = await curateCoaching({ ...analysis, prediction: { status: "abstained", label: null, reasons: ["uncertain"] } }, { GEMINI_MODEL: "configured-model" }, request);
+  assert.equal(abstained.source, "gemini-curated");
+  assert.equal(abstained.summary, analysis.coaching.summary);
 });
 test("provider failures preserve deterministic coaching", async () => {
-  assert.deepEqual(
-    await curateCoaching(analysis, {}, async () => {
-      throw new Error("failure");
-    }),
-    analysis.coaching,
-  );
+  assert.deepEqual(await curateCoaching(analysis, {}, async () => { throw new Error("failure"); }), analysis.coaching);
 });
 test("Snowflake aggregation excludes personal fields, raw trades, dates, and capability IDs", () => {
-  assert.deepEqual(
-    Object.keys(
-      aggregateRecord({
-        ...analysis,
-        sessionId: "secret",
-        trades: ["private"],
-      }),
-    ),
-    [
-      "schema_version",
-      "model_version",
-      "status",
-      "label",
-      "confidence",
-      "usable_rows",
-    ],
-  );
+  assert.deepEqual(Object.keys(aggregateRecord({ ...analysis, sessionId: "secret", trades: ["private"] })), ["schema_version", "model_version", "status", "label", "confidence", "usable_rows"]);
 });

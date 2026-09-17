@@ -7,6 +7,7 @@
     "dev": "concurrently \"cd backend && npm start\" \"cd frontend && npm run dev\"",
     "ml:train": "node scripts/python.mjs -m ml.training train",
     "ml:evaluate": "node scripts/python.mjs -m ml.training evaluate",
+    "ml:external-evaluate": "node scripts/python.mjs -m ml.training external-evaluate",
     "test:ml": "node scripts/python.mjs -m unittest discover -s tests -v",
     "test:backend": "npm --prefix backend test",
     "test": "npm run test:ml && npm run test:backend",

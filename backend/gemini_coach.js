@@ -24,12 +24,8 @@ export async function curateCoaching(
   request = fetch,
 ) {
   const fallback = { ...analysis.coaching, source: "deterministic" };
-  // Abstention and unavailable predictions never become a Gemini classification.
-  if (
-    analysis.prediction.status !== "classified" ||
-    !analysis.coaching.actions.length
-  )
-    return fallback;
+  // Gemini only selects verified coaching text; it cannot turn an abstention into a classification.
+  if (!analysis.coaching.actions.length) return fallback;
   const payload = {
     scope: analysis.scope,
     prediction: analysis.prediction,
@@ -52,7 +48,7 @@ export async function curateCoaching(
           systemInstruction: {
             parts: [
               {
-                text: 'You curate educational behavioral reflections from verified analytics. Select the most relevant provided action IDs in priority order. Return only JSON {"action_ids":[integer,...]}. Do not create advice, numbers, predictions, or prose. These are synthetic benchmark patterns, not psychological diagnoses or investment recommendations.',
+                text: 'You curate educational behavioral reflections from verified analytics. Select the most relevant provided action IDs in priority order. Respect the supplied classification status and abstention reasons; never imply a withheld class was identified. Return only JSON {"action_ids":[integer,...]}. Do not create advice, numbers, predictions, or prose. These are synthetic benchmark patterns, not psychological diagnoses or investment recommendations.',
               },
             ],
           },

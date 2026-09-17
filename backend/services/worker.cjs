@@ -26,7 +26,7 @@ function resolvePythonExecutable() {
 }
 
 class PythonWorker {
-  constructor({ timeoutMs = 30_000, maxQueue = 4, spawnProcess = spawn } = {}) {
+  constructor({ timeoutMs = 90_000, maxQueue = 4, spawnProcess = spawn } = {}) {
     this.timeoutMs = timeoutMs;
     this.maxQueue = maxQueue;
     this.spawnProcess = spawnProcess;
@@ -122,7 +122,6 @@ class PythonWorker {
         this.pump();
       }
     });
-    // Consume stderr without logging financial data, paths, or library diagnostics.
     child.stderr.resume();
     child.stdin.on("error", () => {
       if (this.child === child)
@@ -163,7 +162,6 @@ class PythonWorker {
       clearTimeout(job.timer);
       job.reject(error);
     }
-    // Restart lazily on the next request, avoiding crash loops.
   }
   close() {
     this.closed = true;

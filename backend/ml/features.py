@@ -8,7 +8,7 @@ import re
 import numpy as np
 import pandas as pd
 
-FEATURE_VERSION = "1.0.0"
+FEATURE_VERSION = "2.0.0"
 MAX_ROWS = 500_000
 MAX_BYTES = 50 * 1024 * 1024
 REQUIRED = ("timestamp", "quantity", "entry_price", "profit_loss")
@@ -36,6 +36,21 @@ DEFINITIONS = {
     "loss_win_holding_ratio": ("Loser / winner holding time", "ratio", "Median loss holding duration / median win holding duration; descriptive proxy only."),
 }
 FEATURE_NAMES = list(DEFINITIONS)
+# Only concept-linked, outcome-conditional or activity features are allowed to
+# drive classification. Descriptive nuisance features remain available in the
+# report but cannot become simulator-specific shortcuts.
+MODEL_FEATURE_NAMES = [
+    "trades_per_day",
+    "max_trades_hour",
+    "median_gap_minutes",
+    "post_loss_size_ratio",
+    "post_win_size_ratio",
+    "post_loss_increase_fraction",
+    "post_loss_gap_ratio",
+    "post_win_gap_ratio",
+    "streak_size_ratio",
+    "loss_win_holding_ratio",
+]
 
 
 class ValidationError(ValueError):

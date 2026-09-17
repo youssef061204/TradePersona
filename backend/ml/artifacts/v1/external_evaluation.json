@@ -1,0 +1,19 @@
+{
+  "version": "1.0.0",
+  "methodology": "Separately implemented generator with different timing and size distributions. Never used for fitting, feature selection, calibration, thresholds or model selection.",
+  "pure": {
+    "macro_f1": 0.8054137171471083,
+    "weighted_f1": 0.8054137171471083,
+    "accuracy": 0.808,
+    "balanced_accuracy": 0.808,
+    "coverage": 0.646,
+    "retained_accuracy": 0.8575851393188855,
+    "abstained": 177
+  },
+  "mixed": {
+    "histories": 250,
+    "abstention_rate": 0.524,
+    "classified": 119,
+    "mean_top_probability": 0.9213803006113738
+  }
+}
