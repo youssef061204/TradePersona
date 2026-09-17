@@ -111,7 +111,7 @@ timestamp,quantity,entry_price,profit_loss,holding_minutes,asset
 
 One account and currency, one row per **completed position**, positive quantity/entry price, finite realized P/L. Timestamp means completion time; ISO timestamps without timezone are interpreted as UTC. `holding_minutes` is optional for factual metrics but required for classification. At least 30 trades, five wins and five losses are required. Raw execution lots, ambiguous simultaneous outcomes, overlapping positions, and negative-quantity short encodings are unsupported. The application cannot independently verify a user's timestamp semantics.
 
-Files are limited to 5 MiB / 50,000 rows. Malformed rows reject the upload with quality details. Exact repeated behavioral records are removed with a warning. See the [API/input contract](docs/CONTRACT.md).
+Files are limited to 50 MiB / 50,000 rows. Malformed rows reject the upload with quality details. Exact repeated behavioral records are removed with a warning. See the [API/input contract](docs/CONTRACT.md).
 
 ## Reproduce the experiment
 

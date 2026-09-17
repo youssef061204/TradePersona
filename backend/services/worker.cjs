@@ -38,9 +38,9 @@ class PythonWorker {
   analyze(csv) {
     if (this.closed)
       return Promise.reject(new WorkerError("Analysis worker is closed."));
-    if (Buffer.byteLength(csv, "utf8") > 5 * 1024 * 1024)
+    if (Buffer.byteLength(csv, "utf8") > 50 * 1024 * 1024)
       return Promise.reject(
-        new WorkerError("CSV exceeds the 5 MB limit.", 413),
+        new WorkerError("CSV exceeds the 50 MB limit.", 413),
       );
     if (this.active && this.queue.length >= this.maxQueue)
       return Promise.reject(

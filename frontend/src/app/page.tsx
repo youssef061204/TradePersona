@@ -30,8 +30,8 @@ export default function Home() {
       setError("Choose a CSV file.");
       return;
     }
-    if (next.size > 5 * 1024 * 1024) {
-      setError("Your file exceeds the 5 MB upload limit.");
+    if (next.size > 50 * 1024 * 1024) {
+      setError("Your file exceeds the 50 MB upload limit.");
       return;
     }
     setFile(next);
@@ -123,7 +123,7 @@ export default function Home() {
             <span>
               {file
                 ? (file.size / 1024).toFixed(1) + " KB · Ready to analyze"
-                : "CSV files up to 5 MB"}
+                : "CSV files up to 50 MB"}
             </span>
             <input
               ref={input}

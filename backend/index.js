@@ -14,7 +14,7 @@ const backendDir = path.dirname(fileURLToPath(import.meta.url));
 const { PythonWorker, WorkerError } = createRequire(import.meta.url)(
   "./services/worker.cjs",
 );
-export const MAX_UPLOAD_BYTES = 5 * 1024 * 1024;
+export const MAX_UPLOAD_BYTES = 50 * 1024 * 1024;
 const SESSION_TTL_MS = 30 * 60 * 1000;
 const UUID =
   /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -242,7 +242,7 @@ export function createApp({
         error: {
           message:
             error.code === "LIMIT_FILE_SIZE"
-              ? "CSV exceeds the 5 MB limit."
+              ? "CSV exceeds the 50 MB limit."
               : "Send exactly one CSV in the file field, with no extra fields.",
         },
       });

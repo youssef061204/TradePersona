@@ -10,7 +10,7 @@ import pandas as pd
 
 FEATURE_VERSION = "1.0.0"
 MAX_ROWS = 50_000
-MAX_BYTES = 5 * 1024 * 1024
+MAX_BYTES = 50 * 1024 * 1024
 REQUIRED = ("timestamp", "quantity", "entry_price", "profit_loss")
 # name: (human label, unit, definition)
 DEFINITIONS = {
@@ -51,7 +51,7 @@ def validate_csv(text: str):
     if not isinstance(text, str) or not text.strip():
         raise ValidationError("Upload a nonempty CSV.", quality)
     if len(text.encode("utf-8")) > MAX_BYTES:
-        raise ValidationError("CSV exceeds the 5 MiB limit.", quality)
+        raise ValidationError("CSV exceeds the 50 MiB limit.", quality)
     try:
         rows = list(csv.reader(io.StringIO(text.lstrip("\ufeff")), strict=True))
     except csv.Error as exc:

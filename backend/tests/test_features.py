@@ -173,7 +173,7 @@ class CsvValidationTests(unittest.TestCase):
 
     def test_rejects_payload_over_byte_limit(self):
         payload = self.HEADER + (" " * (MAX_BYTES + 1))
-        self.assert_invalid(payload, "5 MiB")
+        self.assert_invalid(payload, "50 MiB")
 
 
 if __name__ == "__main__":
