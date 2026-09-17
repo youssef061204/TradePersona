@@ -14,7 +14,7 @@ No Gemini or Snowflake credentials are required for the full default analytics f
 
 ## Retention and capacity
 
-Raw CSV uploads stay in request/worker memory and are never written to disk. Accepted files are UTF-8 CSV, at most 50 MB and 50,000 rows. Python owns structural and numeric validation. One worker handles analysis, with at most four queued jobs and a 30-second total deadline. There are at most five admitted uploads. Worker failure clears pending jobs and the next request starts a new worker.
+Raw CSV uploads stay in request/worker memory and are never written to disk. Accepted files are UTF-8 CSV, at most 50 MB and 500,000 rows. Python owns structural and numeric validation. One worker handles analysis, with at most four queued jobs and a 30-second total deadline. There are at most five admitted uploads. Worker failure clears pending jobs and the next request starts a new worker.
 
 Only analysis results are retained: at most 100 memory sessions, for a fixed 30 minutes. Oldest sessions are evicted at capacity. Restart/redeploy deletes all sessions. `DELETE /api/analysis/:sessionId` deletes one result. A session UUID is a bearer capability: anyone with it can read/delete that result, so do not share it or log request URLs. Configure your reverse proxy/provider access logging accordingly. There are no accounts or durable history. Horizontal replicas would need shared storage or session affinity; this deployment intentionally uses one process.
 

@@ -155,7 +155,7 @@ class CsvValidationTests(unittest.TestCase):
         self.assertTrue(any("UTC" in warning for warning in quality["warnings"]))
         self.assertTrue(any("removed" in warning for warning in quality["warnings"]))
 
-    def test_accepts_exactly_fifty_thousand_rows(self):
+    def test_accepts_exactly_five_hundred_thousand_rows(self):
         header = "timestamp,quantity,entry_price,profit_loss\n"
         rows = "\n".join(
             f"2025-01-01T00:00:00Z,{i + 1},10,{1 if i % 2 else -1}"
@@ -165,10 +165,10 @@ class CsvValidationTests(unittest.TestCase):
         self.assertEqual(len(frame), MAX_ROWS)
         self.assertEqual(quality["usable_rows"], MAX_ROWS)
 
-    def test_rejects_more_than_fifty_thousand_rows(self):
+    def test_rejects_more_than_five_hundred_thousand_rows(self):
         header = "timestamp,quantity,entry_price,profit_loss\n"
         row = "2025-01-01T00:00:00Z,1,10,-1\n"
-        exc = self.assert_invalid(header + row * (MAX_ROWS + 1), "50,000")
+        exc = self.assert_invalid(header + row * (MAX_ROWS + 1), "500,000")
         self.assertEqual(exc.quality["total_rows"], MAX_ROWS + 1)
 
     def test_rejects_payload_over_byte_limit(self):

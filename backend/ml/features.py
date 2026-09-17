@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 
 FEATURE_VERSION = "1.0.0"
-MAX_ROWS = 50_000
+MAX_ROWS = 500_000
 MAX_BYTES = 50 * 1024 * 1024
 REQUIRED = ("timestamp", "quantity", "entry_price", "profit_loss")
 # name: (human label, unit, definition)
@@ -64,7 +64,7 @@ def validate_csv(text: str):
     body = [r for r in rows[1:] if r]
     quality["total_rows"] = len(body)
     if len(body) > MAX_ROWS:
-        raise ValidationError("CSV exceeds 50,000 rows.", quality)
+        raise ValidationError("CSV exceeds 500,000 rows.", quality)
     quality["missing_fields"] = [k for k in REQUIRED if k not in header]
     if quality["missing_fields"]:
         raise ValidationError("Missing required columns: " + ", ".join(quality["missing_fields"]), quality)
