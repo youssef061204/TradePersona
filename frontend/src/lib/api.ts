@@ -3,8 +3,11 @@ import type { Analysis, Coaching, Evaluation, Quality } from "./types";
 function getApiBaseUrl() {
   const rawApiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL?.trim();
   if (rawApiBaseUrl) return rawApiBaseUrl.replace(/\/+$/, "");
-  if (typeof window !== "undefined" && ["localhost", "127.0.0.1"].includes(window.location.hostname)) return "http://localhost:3001";
-  throw new Error("NEXT_PUBLIC_API_BASE_URL is not configured for this deployment.");
+  if (typeof window !== "undefined") {
+    if (["localhost", "127.0.0.1"].includes(window.location.hostname)) return "http://localhost:3001";
+    return "https://tradepersona-backend.onrender.com";
+  }
+  throw new Error("API base URL is unavailable in this runtime.");
 }
 export function apiUrl(path: string) { const apiBaseUrl = getApiBaseUrl(); const normalizedPath = path.startsWith("/") ? path : `/${path}`; return `${apiBaseUrl}${normalizedPath}`; }
 export class ApiError extends Error { constructor(message: string, public status: number, public quality?: Quality) { super(message); } }
